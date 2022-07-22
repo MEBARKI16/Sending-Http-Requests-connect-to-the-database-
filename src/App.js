@@ -7,10 +7,13 @@ import './App.css';
 function App() {
   const [movies, setmovies] = useState([]);
   const [isloading, setisloading] = useState(false);
-  function fetchMoviesHandler() {
+  const [error, seterror] = useState(null);
+ async function fetchMoviesHandler() {
     setisloading(true);
-    fetch('https://swapi.dev/api/films/').then(response => {
-      return response.json();}).then(data => {
+    seterror(null);
+    try
+ { const response = await fetch('https://swapi.dev/api/film/')
+ const data = await response.jason();
         const transfommovies = data.results.map((moviedata) => {
           return {
             id: moviedata.episode_id,
@@ -22,7 +25,10 @@ function App() {
         
         setmovies(transfommovies);
         setisloading(false);
-      });
+      }
+      catch(error){
+
+      }
     }
   
 
