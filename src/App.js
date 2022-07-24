@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
@@ -8,16 +8,18 @@ function App() {
   const [movies, setmovies] = useState([]);
   const [isloading, setisloading] = useState(false);
   const [error, seterror] = useState(null);
- async function fetchMoviesHandler() {
+    
+ const fetchMoviesHandler =  useCallback(async () => {
     setisloading(true);
     seterror(null);
-    try
- { const response = await fetch('https://swapi.dev/api/film/');
- if(!response.ok)
- {
-  throw new Error('something went wrong!');
- }
- const data = await response.jason();
+    try {
+   const response = await fetch('https://swapi.dev/api/films/');
+   console.log(response);
+   if(!response.ok)
+   {
+    throw new Error('something went wrong!');
+   }
+ const data = await response.json();
         const transfommovies = data.results.map((moviedata) => {
           return {
             id: moviedata.episode_id,
@@ -34,8 +36,10 @@ function App() {
            seterror(error.message);
       }
       setisloading(false);
-    }
-  
+    },[])
+ useEffect(() => {
+      fetchMoviesHandler();
+    },[fetchMoviesHandler]);
 
   return (
     <React.Fragment>
